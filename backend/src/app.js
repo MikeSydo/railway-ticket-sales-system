@@ -21,4 +21,16 @@ app.get("/api/health", (_req, res) => {
 app.use("/api/bookings", bookingsRouter);
 app.use("/api/trains", trainsRouter);
 
+app.use((req, res) => {
+  res.status(404).json({
+    message: `Route ${req.method} ${req.path} not found.`
+  });
+});
+
+app.use((error, _req, res, _next) => {
+  res.status(500).json({
+    message: error.message || "Internal server error."
+  });
+});
+
 module.exports = app;
