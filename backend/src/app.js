@@ -1,4 +1,5 @@
 const express = require("express");
+const bookingsRouter = require("./routes/bookings");
 const trainsRouter = require("./routes/trains");
 
 const app = express();
@@ -17,6 +18,7 @@ app.get("/api/health", (_req, res) => {
   });
 });
 
+app.use("/api/bookings", bookingsRouter);
 app.use("/api/trains", trainsRouter);
 
 module.exports = app;

@@ -1,5 +1,6 @@
 const fs = require("fs/promises");
 const path = require("path");
+const crypto = require("crypto");
 
 const bookingsFilePath = path.join(__dirname, "..", "data", "bookings.json");
 
@@ -13,7 +14,31 @@ async function getBookingsByTrainAndWagon(trainId, wagonId) {
   return bookings.filter((booking) => booking.trainId === trainId && booking.wagonId === wagonId);
 }
 
+async function writeBookings(bookings) {
+  await fs.writeFile(bookingsFilePath, JSON.stringify(bookings, null, 2), "utf8");
+}
+
+async function createBooking(payload) {
+  const bookings = await readBookings();
+  const booking = {
+    id: crypto.randomUUID(),
+    trainId: payload.trainId,
+    wagonId: payload.wagonId,
+    seatIds: payload.seatIds,
+    name: payload.name,
+    phone: payload.phone,
+    email: payload.email,
+    createdAt: new Date().toISOString()
+  };
+
+  bookings.push(booking);
+  await writeBookings(bookings);
+
+  return booking;
+}
+
 module.exports = {
+  createBooking,
   readBookings,
   getBookingsByTrainAndWagon
 };
