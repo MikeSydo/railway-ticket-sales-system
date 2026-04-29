@@ -1,4 +1,5 @@
 const express = require("express");
+const trainsRouter = require("./routes/trains");
 
 const app = express();
 
@@ -15,5 +16,7 @@ app.get("/api/health", (_req, res) => {
     status: "ok"
   });
 });
+
+app.use("/api/trains", trainsRouter);
 
 module.exports = app;

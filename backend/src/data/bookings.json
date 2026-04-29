@@ -1,0 +1,22 @@
+[
+  {
+    "id": "booking-seed-1",
+    "trainId": "train-091k",
+    "wagonId": "wagon-1",
+    "seatIds": [1, 2],
+    "name": "Іван Петренко",
+    "phone": "+380671112233",
+    "email": "ivan.petrenko@example.com",
+    "createdAt": "2026-04-29T08:00:00.000Z"
+  },
+  {
+    "id": "booking-seed-2",
+    "trainId": "train-715k",
+    "wagonId": "wagon-2",
+    "seatIds": [7],
+    "name": "Марія Коваль",
+    "phone": "+380931234567",
+    "email": "maria.koval@example.com",
+    "createdAt": "2026-04-29T08:15:00.000Z"
+  }
+]
