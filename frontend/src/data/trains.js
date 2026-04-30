@@ -1,0 +1,32 @@
+export const trains = [
+  {
+    id: 'train-091k',
+    number: '091К',
+    from: 'Київ',
+    to: 'Львів',
+    departureTime: '29 квітня, 22:15',
+    arrivalTime: '30 квітня, 06:20',
+    duration: '8 год 05 хв',
+    type: 'Купе та плацкарт',
+  },
+  {
+    id: 'train-715k',
+    number: '715К',
+    from: 'Київ',
+    to: 'Дніпро',
+    departureTime: '29 квітня, 07:10',
+    arrivalTime: '29 квітня, 13:05',
+    duration: '5 год 55 хв',
+    type: 'Інтерсіті+',
+  },
+  {
+    id: 'train-012l',
+    number: '012Л',
+    from: 'Одеса',
+    to: 'Львів',
+    departureTime: '29 квітня, 18:45',
+    arrivalTime: '30 квітня, 07:30',
+    duration: '12 год 45 хв',
+    type: 'Люкс та купе',
+  },
+]

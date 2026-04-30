@@ -1,0 +1,22 @@
+import TrainCard from './TrainCard'
+
+function TrainList({ trains }) {
+  if (trains.length === 0) {
+    return (
+      <div className="empty-state">
+        <h3>Нічого не знайдено</h3>
+        <p>Спробуйте інший номер потяга або назву міста.</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="train-grid">
+      {trains.map((train) => (
+        <TrainCard key={train.id} train={train} />
+      ))}
+    </div>
+  )
+}
+
+export default TrainList
