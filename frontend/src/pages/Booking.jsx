@@ -71,7 +71,7 @@ function Booking() {
             </h2>
           </div>
 
-          <Link className="back-link" to="/">
+          <Link className="train-action back-link" to="/">
             ← До списку рейсів
           </Link>
         </div>
