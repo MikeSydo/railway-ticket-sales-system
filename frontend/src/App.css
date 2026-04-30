@@ -156,6 +156,9 @@
 }
 
 .train-action {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   border: none;
   border-radius: 16px;
   padding: 14px 18px;
@@ -164,6 +167,7 @@
   color: #f8f5ef;
   background: linear-gradient(135deg, #a63f14, #c9672a);
   cursor: pointer;
+  text-decoration: none;
 }
 
 .empty-state {

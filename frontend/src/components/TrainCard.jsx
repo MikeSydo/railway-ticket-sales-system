@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 function formatDateTime(value) {
   const date = new Date(value)
 
@@ -44,9 +46,9 @@ function TrainCard({ train }) {
         </div>
       </dl>
 
-      <button className="train-action" type="button">
+      <Link className="train-action" to={`/booking/${train.id}`}>
         Обрати рейс
-      </button>
+      </Link>
     </article>
   )
 }
