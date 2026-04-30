@@ -20,6 +20,14 @@
   color: #f8f5ef;
 }
 
+.hero-panel h1 {
+  color: #f8f5ef;
+  background: linear-gradient(135deg, #ffd38a, #ffffff, #f08a3c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .eyebrow,
 .section-kicker {
   margin: 0 0 12px;
