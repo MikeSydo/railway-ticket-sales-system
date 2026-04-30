@@ -1,9 +1,28 @@
+function formatDateTime(value) {
+  const date = new Date(value)
+
+  if (Number.isNaN(date.getTime())) {
+    return value
+  }
+
+  return new Intl.DateTimeFormat('uk-UA', {
+    day: '2-digit',
+    month: 'long',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date)
+}
+
+function formatDuration(value) {
+  return value.replace('h', ' год ').replace('m', ' хв').trim()
+}
+
 function TrainCard({ train }) {
   return (
     <article className="train-card">
       <div className="train-card-top">
         <span className="train-badge">Потяг {train.number}</span>
-        <span className="train-type">{train.type}</span>
+        {train.type ? <span className="train-type">{train.type}</span> : null}
       </div>
 
       <h3>
@@ -13,15 +32,15 @@ function TrainCard({ train }) {
       <dl className="train-meta">
         <div>
           <dt>Відправлення</dt>
-          <dd>{train.departureTime}</dd>
+          <dd>{formatDateTime(train.departureTime)}</dd>
         </div>
         <div>
           <dt>Прибуття</dt>
-          <dd>{train.arrivalTime}</dd>
+          <dd>{formatDateTime(train.arrivalTime)}</dd>
         </div>
         <div>
           <dt>Тривалість</dt>
-          <dd>{train.duration}</dd>
+          <dd>{formatDuration(train.duration)}</dd>
         </div>
       </dl>
 
