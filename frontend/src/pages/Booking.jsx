@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import SeatMap from '../components/SeatMap'
 import WagonSelector from '../components/WagonSelector'
-import { getTrainDetails } from '../services/bookingService'
+import { getTrainDetails, getWagonSeats } from '../services/bookingService'
 
 function formatDateTime(value) {
   const date = new Date(value)
@@ -22,8 +23,12 @@ function Booking() {
   const { trainId } = useParams()
   const [train, setTrain] = useState(null)
   const [selectedWagonId, setSelectedWagonId] = useState('')
+  const [seats, setSeats] = useState([])
+  const [selectedSeatIds, setSelectedSeatIds] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isSeatsLoading, setIsSeatsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [seatsError, setSeatsError] = useState('')
 
   useEffect(() => {
     const controller = new AbortController()
@@ -51,6 +56,45 @@ function Booking() {
 
     return () => controller.abort()
   }, [trainId])
+
+  useEffect(() => {
+    if (!selectedWagonId) {
+      return
+    }
+
+    const controller = new AbortController()
+
+    async function loadSeats() {
+      try {
+        setIsSeatsLoading(true)
+        setSeatsError('')
+        setSelectedSeatIds([])
+
+        const data = await getWagonSeats(trainId, selectedWagonId, controller.signal)
+        setSeats(data.seats)
+      } catch (loadError) {
+        if (loadError.name !== 'AbortError') {
+          setSeatsError(loadError.message)
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsSeatsLoading(false)
+        }
+      }
+    }
+
+    loadSeats()
+
+    return () => controller.abort()
+  }, [trainId, selectedWagonId])
+
+  function handleToggleSeat(seatId) {
+    setSelectedSeatIds((current) =>
+      current.includes(seatId)
+        ? current.filter((value) => value !== seatId)
+        : [...current, seatId]
+    )
+  }
 
   return (
     <main className="app-shell">
@@ -109,6 +153,37 @@ function Booking() {
                 selectedWagonId={selectedWagonId}
                 onSelect={setSelectedWagonId}
               />
+            </div>
+
+            <div className="booking-block">
+              <div className="booking-block-header">
+                <h3>Оберіть місця</h3>
+              </div>
+
+              <div className="seat-legend">
+                <span className="legend-item">
+                  <span className="legend-swatch legend-available"></span>
+                  Вільні
+                </span>
+                <span className="legend-item">
+                  <span className="legend-swatch legend-selected"></span>
+                  Обрані
+                </span>
+                <span className="legend-item">
+                  <span className="legend-swatch legend-booked"></span>
+                  Заброньовані
+                </span>
+              </div>
+
+              {seatsError ? <div className="error-state">{seatsError}</div> : null}
+              {isSeatsLoading ? <div className="loading-state">Завантажуємо схему місць...</div> : null}
+              {!isSeatsLoading && !seatsError ? (
+                <SeatMap
+                  seats={seats}
+                  selectedSeatIds={selectedSeatIds}
+                  onToggleSeat={handleToggleSeat}
+                />
+              ) : null}
             </div>
           </>
         ) : null}
