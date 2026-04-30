@@ -358,8 +358,21 @@
   margin-bottom: 4px;
 }
 
-.booking-form-header h3 {
-  margin: 0;
+.booking-selection-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.booking-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #eef4f8;
+  color: #24415d;
+  font-size: 0.92rem;
+  font-weight: 700;
 }
 
 .booking-field {
@@ -382,6 +395,11 @@
 .booking-field input:focus {
   outline: 2px solid rgba(201, 103, 42, 0.2);
   border-color: #c9672a;
+}
+
+.booking-form .train-action:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 @media (max-width: 1024px) {

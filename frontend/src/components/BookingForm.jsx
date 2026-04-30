@@ -4,12 +4,20 @@ function BookingForm({
   onSubmit,
   isSubmitting,
   selectedSeatIds,
+  isSubmitDisabled,
+  selectedWagonLabel,
 }) {
   return (
     <form className="booking-form" onSubmit={onSubmit}>
       <div className="booking-form-header">
-        <h3>Дані пасажира</h3>
-        <p>Обрані місця: {selectedSeatIds.length > 0 ? selectedSeatIds.join(', ') : 'не обрано'}</p>
+        <div className="booking-selection-summary">
+          <span className="booking-chip">
+            Вагон: {selectedWagonLabel || 'не обрано'}
+          </span>
+          <span className="booking-chip">
+            Місця: {selectedSeatIds.length > 0 ? selectedSeatIds.join(', ') : 'не обрано'}
+          </span>
+        </div>
       </div>
 
       <label className="booking-field">
@@ -17,6 +25,8 @@ function BookingForm({
         <input
           name="name"
           type="text"
+          required
+          minLength="2"
           value={values.name}
           onChange={onChange}
           placeholder="Введіть ім’я пасажира"
@@ -28,6 +38,8 @@ function BookingForm({
         <input
           name="phone"
           type="tel"
+          required
+          pattern="^\+?[0-9\s\-()]{10,20}$"
           value={values.phone}
           onChange={onChange}
           placeholder="+380..."
@@ -39,13 +51,18 @@ function BookingForm({
         <input
           name="email"
           type="email"
+          required
           value={values.email}
           onChange={onChange}
           placeholder="example@email.com"
         />
       </label>
 
-      <button className="train-action" type="submit" disabled={isSubmitting}>
+      <button
+        className="train-action"
+        type="submit"
+        disabled={isSubmitting || isSubmitDisabled}
+      >
         {isSubmitting ? 'Зберігаємо...' : 'Забронювати квитки'}
       </button>
     </form>

@@ -113,6 +113,10 @@ function Booking() {
 
   function handleFieldChange(event) {
     const { name, value } = event.target
+    if (bookingError) {
+      setBookingError('')
+    }
+
     setFormValues((current) => ({
       ...current,
       [name]: value,
@@ -269,7 +273,11 @@ function Booking() {
                 onChange={handleFieldChange}
                 onSubmit={handleBookingSubmit}
                 isSubmitting={isSubmitting}
+                isSubmitDisabled={!selectedWagonId || selectedSeatIds.length === 0}
                 selectedSeatIds={selectedSeatIds}
+                selectedWagonLabel={
+                  train.wagons.find((wagon) => wagon.id === selectedWagonId)?.id.replace('wagon-', '') || ''
+                }
               />
             </div>
           </>
