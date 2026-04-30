@@ -172,6 +172,23 @@
   text-align: center;
 }
 
+.loading-state,
+.error-state {
+  margin-top: 18px;
+  padding: 24px 28px;
+  border-radius: 20px;
+}
+
+.loading-state {
+  background: #eef4f8;
+  color: #24415d;
+}
+
+.error-state {
+  background: #fff1eb;
+  color: #8f3614;
+}
+
 @media (max-width: 1024px) {
   .app-shell {
     padding: 20px;
