@@ -3,7 +3,10 @@
     "id": "booking-seed-1",
     "trainId": "train-091k",
     "wagonId": "wagon-1",
-    "seatIds": [1, 2],
+    "seatIds": [
+      1,
+      2
+    ],
     "name": "Іван Петренко",
     "phone": "+380671112233",
     "email": "ivan.petrenko@example.com",
@@ -13,10 +16,38 @@
     "id": "booking-seed-2",
     "trainId": "train-715k",
     "wagonId": "wagon-2",
-    "seatIds": [7],
+    "seatIds": [
+      7
+    ],
     "name": "Марія Коваль",
     "phone": "+380931234567",
     "email": "maria.koval@example.com",
     "createdAt": "2026-04-29T08:15:00.000Z"
+  },
+  {
+    "id": "2982be3b-a768-4d34-be1b-cd0e11b7b235",
+    "trainId": "train-715k",
+    "wagonId": "wagon-1",
+    "seatIds": [
+      1,
+      2
+    ],
+    "name": "Олександр Іваненко",
+    "phone": "+380931234569",
+    "email": "olexandr.ivanenko@example.com",
+    "createdAt": "2026-04-30T17:03:32.187Z"
+  },
+  {
+    "id": "c6500719-beb2-4c6d-93ae-12b2942f99d6",
+    "trainId": "train-091k",
+    "wagonId": "wagon-1",
+    "seatIds": [
+      3,
+      4
+    ],
+    "name": "efeff",
+    "phone": "wc",
+    "email": "fewfew@gmail.com",
+    "createdAt": "2026-04-30T17:10:01.677Z"
   }
 ]

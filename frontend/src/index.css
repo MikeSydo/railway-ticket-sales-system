@@ -52,7 +52,6 @@ h1 {
   font-size: clamp(2.6rem, 5vw, 4.8rem);
   letter-spacing: -0.06em;
   margin: 0 0 18px;
-  color: gradient(135deg, #7a4522, #ffbb00);
   @media (max-width: 1024px) {
     font-size: 2.9rem;
   }
