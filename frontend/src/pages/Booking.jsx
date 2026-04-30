@@ -1,8 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import BookingForm from '../components/BookingForm'
 import SeatMap from '../components/SeatMap'
 import WagonSelector from '../components/WagonSelector'
-import { getTrainDetails, getWagonSeats } from '../services/bookingService'
+import {
+  createBooking,
+  getTrainDetails,
+  getWagonSeats,
+} from '../services/bookingService'
 
 function formatDateTime(value) {
   const date = new Date(value)
@@ -25,10 +30,18 @@ function Booking() {
   const [selectedWagonId, setSelectedWagonId] = useState('')
   const [seats, setSeats] = useState([])
   const [selectedSeatIds, setSelectedSeatIds] = useState([])
+  const [formValues, setFormValues] = useState({
+    name: '',
+    phone: '',
+    email: '',
+  })
   const [isLoading, setIsLoading] = useState(true)
   const [isSeatsLoading, setIsSeatsLoading] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [seatsError, setSeatsError] = useState('')
+  const [bookingError, setBookingError] = useState('')
+  const [bookingSuccess, setBookingSuccess] = useState('')
 
   useEffect(() => {
     const controller = new AbortController()
@@ -69,6 +82,8 @@ function Booking() {
         setIsSeatsLoading(true)
         setSeatsError('')
         setSelectedSeatIds([])
+        setBookingError('')
+        setBookingSuccess('')
 
         const data = await getWagonSeats(trainId, selectedWagonId, controller.signal)
         setSeats(data.seats)
@@ -94,6 +109,61 @@ function Booking() {
         ? current.filter((value) => value !== seatId)
         : [...current, seatId]
     )
+  }
+
+  function handleFieldChange(event) {
+    const { name, value } = event.target
+    setFormValues((current) => ({
+      ...current,
+      [name]: value,
+    }))
+  }
+
+  async function handleBookingSubmit(event) {
+    event.preventDefault()
+
+    if (selectedSeatIds.length === 0) {
+      setBookingError('Спочатку оберіть хоча б одне місце.')
+      setBookingSuccess('')
+      return
+    }
+
+    if (!formValues.name.trim() || !formValues.phone.trim() || !formValues.email.trim()) {
+      setBookingError('Заповніть ім’я, телефон та email.')
+      setBookingSuccess('')
+      return
+    }
+
+    try {
+      setIsSubmitting(true)
+      setBookingError('')
+      setBookingSuccess('')
+
+      await createBooking({
+        trainId,
+        wagonId: selectedWagonId,
+        seatIds: selectedSeatIds,
+        name: formValues.name.trim(),
+        phone: formValues.phone.trim(),
+        email: formValues.email.trim(),
+      })
+
+      setBookingSuccess('Бронювання успішно створено.')
+      setFormValues({
+        name: '',
+        phone: '',
+        email: '',
+      })
+
+      const data = await getWagonSeats(trainId, selectedWagonId)
+      setSeats(data.seats)
+      setSelectedSeatIds([])
+    } catch (submitError) {
+      setBookingError(submitError.message)
+      setBookingSuccess('')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -184,6 +254,23 @@ function Booking() {
                   onToggleSeat={handleToggleSeat}
                 />
               ) : null}
+            </div>
+
+            <div className="booking-block">
+              <div className="booking-block-header">
+                <h3>Оформлення бронювання</h3>
+              </div>
+
+              {bookingError ? <div className="error-state">{bookingError}</div> : null}
+              {bookingSuccess ? <div className="success-state">{bookingSuccess}</div> : null}
+
+              <BookingForm
+                values={formValues}
+                onChange={handleFieldChange}
+                onSubmit={handleBookingSubmit}
+                isSubmitting={isSubmitting}
+                selectedSeatIds={selectedSeatIds}
+              />
             </div>
           </>
         ) : null}
