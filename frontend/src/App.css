@@ -20,6 +20,14 @@
   color: #f8f5ef;
 }
 
+.hero-panel h1 {
+  color: #f8f5ef;
+  background: linear-gradient(135deg, #ffd38a, #ffffff, #f08a3c);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
 .eyebrow,
 .section-kicker {
   margin: 0 0 12px;
@@ -83,6 +91,7 @@
 .train-card {
   display: grid;
   gap: 18px;
+  min-width: 0;
   padding: 22px;
   border-radius: 24px;
   border: 1px solid rgba(16, 42, 67, 0.08);
@@ -143,9 +152,13 @@
   font-weight: 700;
   color: var(--heading);
   text-align: right;
+  overflow-wrap: anywhere;
 }
 
 .train-action {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   border: none;
   border-radius: 16px;
   padding: 14px 18px;
@@ -154,6 +167,7 @@
   color: #f8f5ef;
   background: linear-gradient(135deg, #a63f14, #c9672a);
   cursor: pointer;
+  text-decoration: none;
 }
 
 .empty-state {
@@ -162,6 +176,230 @@
   border-radius: 20px;
   background: #f4efe5;
   text-align: center;
+}
+
+.loading-state,
+.error-state {
+  margin-top: 18px;
+  padding: 24px 28px;
+  border-radius: 20px;
+}
+
+.loading-state {
+  background: #eef4f8;
+  color: #24415d;
+}
+
+.error-state {
+  background: #fff1eb;
+  color: #8f3614;
+}
+
+.success-state {
+  margin-top: 18px;
+  padding: 24px 28px;
+  border-radius: 20px;
+  background: #e8f5e6;
+  color: #235a23;
+}
+
+.booking-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.booking-summary div,
+.booking-block {
+  border: 1px solid rgba(16, 42, 67, 0.08);
+  border-radius: 20px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(244, 239, 229, 0.9));
+}
+
+.booking-summary div {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+}
+
+.booking-summary span {
+  color: var(--muted);
+}
+
+.booking-block {
+  padding: 22px;
+}
+
+.booking-block-header {
+  margin-bottom: 18px;
+}
+
+.booking-block-header h3 {
+  margin: 0;
+}
+
+.wagon-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.wagon-card {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  border: 1px solid rgba(16, 42, 67, 0.12);
+  border-radius: 18px;
+  background: #fff;
+  color: var(--heading);
+  text-align: left;
+  cursor: pointer;
+}
+
+.wagon-card-badge {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.wagon-card-active {
+  border-color: #c9672a;
+  box-shadow: 0 0 0 2px rgba(201, 103, 42, 0.18);
+}
+
+.seat-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+}
+
+.legend-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 6px;
+}
+
+.legend-available {
+  background: #dcefdc;
+  border: 1px solid #8eb88e;
+}
+
+.legend-selected {
+  background: #d7e7fb;
+  border: 1px solid #6e9ccf;
+}
+
+.legend-booked {
+  background: #f5d9d1;
+  border: 1px solid #cf7f68;
+}
+
+.seat-map {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.seat {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+  border-radius: 16px;
+  text-align: left;
+  border: 1px solid transparent;
+  background: #fff;
+  color: var(--heading);
+}
+
+.seat-available {
+  background: #eef8ee;
+  border-color: #bfd8bf;
+  cursor: pointer;
+}
+
+.seat-selected {
+  background: #e8f1fd;
+  border-color: #6e9ccf;
+  cursor: pointer;
+}
+
+.seat-booked {
+  background: #f8e4de;
+  border-color: #d6a08f;
+  color: #8f3614;
+  cursor: not-allowed;
+}
+
+.seat-number {
+  font-weight: 700;
+}
+
+.seat-position {
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.booking-form {
+  display: grid;
+  gap: 16px;
+}
+
+.booking-form-header {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.booking-selection-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.booking-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #eef4f8;
+  color: #24415d;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.booking-field {
+  display: grid;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.booking-field input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(16, 42, 67, 0.14);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font: inherit;
+  color: var(--heading);
+  background: #fff;
+}
+
+.booking-field input:focus {
+  outline: 2px solid rgba(201, 103, 42, 0.2);
+  border-color: #c9672a;
+}
+
+.booking-form .train-action:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 @media (max-width: 1024px) {
@@ -180,6 +418,12 @@
   }
 
   .train-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-summary,
+  .wagon-grid,
+  .seat-map {
     grid-template-columns: 1fr;
   }
 }

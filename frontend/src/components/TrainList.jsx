@@ -1,6 +1,10 @@
 import TrainCard from './TrainCard'
 
-function TrainList({ trains }) {
+function TrainList({ trains, isLoading }) {
+  if (isLoading) {
+    return <div className="loading-state">Завантажуємо рейси...</div>
+  }
+
   if (trains.length === 0) {
     return (
       <div className="empty-state">

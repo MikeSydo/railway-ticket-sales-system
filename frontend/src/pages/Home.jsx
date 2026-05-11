@@ -1,22 +1,39 @@
-import { useState } from 'react'
+import { useDeferredValue, useEffect, useState } from 'react'
 import TrainList from '../components/TrainList'
-import { trains } from '../data/trains'
+import { getTrains } from '../services/trainService'
 
 function Home() {
   const [search, setSearch] = useState('')
+  const [trains, setTrains] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState('')
+  const deferredSearch = useDeferredValue(search)
 
-  const normalizedSearch = search.trim().toLowerCase()
-  const filteredTrains = trains.filter((train) => {
-    if (!normalizedSearch) {
-      return true
+  useEffect(() => {
+    const controller = new AbortController()
+
+    async function loadTrains() {
+      try {
+        setIsLoading(true)
+        setError('')
+
+        const items = await getTrains(deferredSearch, controller.signal)
+        setTrains(items)
+      } catch (loadError) {
+        if (loadError.name !== 'AbortError') {
+          setError(loadError.message)
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsLoading(false)
+        }
+      }
     }
 
-    const route = `${train.from} ${train.to}`.toLowerCase()
-    return (
-      train.number.toLowerCase().includes(normalizedSearch) ||
-      route.includes(normalizedSearch)
-    )
-  })
+    loadTrains()
+
+    return () => controller.abort()
+  }, [deferredSearch])
 
   return (
     <main className="app-shell">
@@ -40,11 +57,12 @@ function Home() {
         <div className="results-header">
           <div>
             <p className="section-kicker">Доступні рейси</p>
-            <h2>{filteredTrains.length} знайдено</h2>
+            <h2>{isLoading ? 'Завантаження...' : `${trains.length} знайдено`}</h2>
           </div>
         </div>
 
-        <TrainList trains={filteredTrains} />
+        {error ? <div className="error-state">{error}</div> : null}
+        {!error ? <TrainList isLoading={isLoading} trains={trains} /> : null}
       </section>
     </main>
   )
