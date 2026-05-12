@@ -181,6 +181,17 @@
 .secondary-action {
   background: rgba(255, 255, 255, 0.12);
   color: #f8f5ef;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.secondary-action:hover {
+  border-color: rgba(255, 196, 118, 0.9);
+}
+
+.secondary-action:focus-visible {
+  outline: 2px solid rgba(255, 196, 118, 0.9);
+  outline-offset: 3px;
 }
 
 .danger-action {
