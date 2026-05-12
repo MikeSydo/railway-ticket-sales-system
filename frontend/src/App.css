@@ -176,6 +176,21 @@
   background: linear-gradient(135deg, #a63f14, #c9672a);
   cursor: pointer;
   text-decoration: none;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.train-action:hover {
+  background: linear-gradient(135deg, #8f3614, #d97a34);
+  box-shadow: 0 10px 24px rgba(166, 63, 20, 0.22);
+  transform: translateY(-1px);
+}
+
+.train-action:focus-visible {
+  outline: 2px solid rgba(255, 196, 118, 0.9);
+  outline-offset: 3px;
 }
 
 .secondary-action {
