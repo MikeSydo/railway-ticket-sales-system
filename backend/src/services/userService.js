@@ -1,18 +1,16 @@
-const fs = require("fs/promises");
 const path = require("path");
 const crypto = require("crypto");
+const { readJsonFile, writeJsonFile } = require("../utils/jsonFileStore");
 
 const usersFilePath = path.join(__dirname, "..", "data", "users.json");
 const sessionsFilePath = path.join(__dirname, "..", "data", "sessions.json");
 
 async function readJson(filePath) {
-  const raw = await fs.readFile(filePath, "utf8");
-  const normalized = raw.replace(/^\uFEFF/, "");
-  return JSON.parse(normalized);
+  return readJsonFile(filePath, []);
 }
 
 async function writeJson(filePath, data) {
-  await fs.writeFile(filePath, JSON.stringify(data, null, 2), "utf8");
+  await writeJsonFile(filePath, data);
 }
 
 async function readUsers() {

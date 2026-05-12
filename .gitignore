@@ -1,2 +1,5 @@
 backend/node_modules/
 .env
+backend/src/data/bookings.json
+backend/src/data/users.json
+backend/src/data/sessions.json
