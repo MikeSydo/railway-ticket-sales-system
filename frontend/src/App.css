@@ -28,6 +28,14 @@
   -webkit-text-fill-color: transparent;
 }
 
+.hero-auth-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
 .eyebrow,
 .section-kicker {
   margin: 0 0 12px;
@@ -170,6 +178,11 @@
   text-decoration: none;
 }
 
+.secondary-action {
+  background: rgba(255, 255, 255, 0.12);
+  color: #f8f5ef;
+}
+
 .empty-state {
   margin-top: 18px;
   padding: 28px;
@@ -201,6 +214,16 @@
   border-radius: 20px;
   background: #e8f5e6;
   color: #235a23;
+}
+
+.user-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #f8f5ef;
+  font-weight: 700;
 }
 
 .booking-summary {
@@ -400,6 +423,22 @@
 .booking-form .train-action:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+.auth-panel {
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.loading-screen {
+  max-width: 1200px;
+  margin: 32px auto;
+  padding: 24px 28px;
+  border-radius: 24px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
 
 @media (max-width: 1024px) {

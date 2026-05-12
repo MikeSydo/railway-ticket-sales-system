@@ -1,2 +1,12 @@
-﻿[]
-
+[
+  {
+    "token": "7963323d-ab27-49b9-abfb-eb4949736e0c",
+    "userId": "132ef6cb-8a27-4e8a-b024-265d737bf202",
+    "createdAt": "2026-05-11T17:03:25.904Z"
+  },
+  {
+    "token": "7e447ac0-d147-46f1-8e22-51eebd1c1c03",
+    "userId": "2b6fd195-9e73-49da-ab4e-763b5a36bde0",
+    "createdAt": "2026-05-11T17:03:57.419Z"
+  }
+]

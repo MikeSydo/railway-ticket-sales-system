@@ -1,8 +1,11 @@
 import { useDeferredValue, useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import TrainList from '../components/TrainList'
+import { useAuth } from '../context/AuthContext'
 import { getTrains } from '../services/trainService'
 
 function Home() {
+  const { isAuthenticated, signOut, user } = useAuth()
   const [search, setSearch] = useState('')
   const [trains, setTrains] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -40,6 +43,23 @@ function Home() {
       <section className="hero-panel">
         <p className="eyebrow">Railway ticket sales system</p>
         <h1>Пошук рейсів для бронювання квитків</h1>
+
+        <div className="hero-auth-row">
+          {isAuthenticated ? (
+            <>
+              <span className="user-badge">
+                {user.name} · {user.phone}
+              </span>
+              <button className="train-action secondary-action" type="button" onClick={signOut}>
+                Вийти
+              </button>
+            </>
+          ) : (
+            <Link className="train-action" to="/auth">
+              Увійти
+            </Link>
+          )}
+        </div>
 
         <label className="search-panel" htmlFor="train-search">
           <span>Пошук за номером потяга або маршрутом</span>

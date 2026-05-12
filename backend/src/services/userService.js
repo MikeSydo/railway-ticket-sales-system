@@ -7,7 +7,8 @@ const sessionsFilePath = path.join(__dirname, "..", "data", "sessions.json");
 
 async function readJson(filePath) {
   const raw = await fs.readFile(filePath, "utf8");
-  return JSON.parse(raw);
+  const normalized = raw.replace(/^\uFEFF/, "");
+  return JSON.parse(normalized);
 }
 
 async function writeJson(filePath, data) {
