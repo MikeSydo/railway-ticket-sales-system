@@ -1,5 +1,9 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { getCurrentUser, loginByPhone } from '../services/authService'
+import {
+  getCurrentUser,
+  loginByPhone,
+  registerByPhone,
+} from '../services/authService'
 
 const AUTH_TOKEN_KEY = 'railway-auth-token'
 
@@ -48,6 +52,14 @@ export function AuthProvider({ children }) {
     return data.user
   }
 
+  async function signUp(values) {
+    const data = await registerByPhone(values)
+    localStorage.setItem(AUTH_TOKEN_KEY, data.token)
+    setToken(data.token)
+    setUser(data.user)
+    return data.user
+  }
+
   function signOut() {
     localStorage.removeItem(AUTH_TOKEN_KEY)
     setToken('')
@@ -59,6 +71,7 @@ export function AuthProvider({ children }) {
       isAuthenticated: Boolean(user && token),
       isAuthLoading,
       signIn,
+      signUp,
       signOut,
       token,
       user,

@@ -58,9 +58,14 @@ function Home() {
               </button>
             </>
           ) : (
-            <Link className="train-action" to="/auth">
-              Увійти
-            </Link>
+            <>
+              <Link className="train-action" to="/auth?mode=login">
+                Увійти
+              </Link>
+              <Link className="train-action secondary-action" to="/auth?mode=register">
+                Зареєструватися
+              </Link>
+            </>
           )}
         </div>
 

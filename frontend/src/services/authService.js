@@ -10,7 +10,7 @@ async function parseJsonResponse(response) {
 }
 
 export async function loginByPhone(payload) {
-  const response = await fetch('/api/auth/phone', {
+  const response = await fetch('/api/auth/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -22,6 +22,24 @@ export async function loginByPhone(payload) {
 
   if (!response.ok) {
     throw new Error(data.message || 'Не вдалося виконати вхід.')
+  }
+
+  return data
+}
+
+export async function registerByPhone(payload) {
+  const response = await fetch('/api/auth/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+
+  const data = await parseJsonResponse(response)
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Не вдалося виконати реєстрацію.')
   }
 
   return data

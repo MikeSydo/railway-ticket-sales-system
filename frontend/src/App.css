@@ -460,6 +460,29 @@
   margin: 0 auto;
 }
 
+.auth-mode-switch {
+  display: flex;
+  gap: 12px;
+  margin: 0 0 24px;
+}
+
+.auth-mode-button {
+  border: 1px solid rgba(16, 42, 67, 0.14);
+  border-radius: 14px;
+  padding: 12px 18px;
+  font: inherit;
+  font-weight: 700;
+  color: var(--heading);
+  background: #fff;
+  cursor: pointer;
+}
+
+.auth-mode-button-active {
+  background: linear-gradient(135deg, #a63f14, #c9672a);
+  color: #f8f5ef;
+  border-color: transparent;
+}
+
 .loading-screen {
   max-width: 1200px;
   margin: 32px auto;

@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 function Auth() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { signIn, isAuthenticated } = useAuth()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { signIn, signUp, isAuthenticated } = useAuth()
+  const mode = searchParams.get('mode') === 'register' ? 'register' : 'login'
   const [formValues, setFormValues] = useState({
-    name: '',
+    username: '',
     phone: '',
   })
   const [error, setError] = useState('')
@@ -41,13 +43,26 @@ function Auth() {
       return
     }
 
+    if (mode === 'register' && !formValues.username.trim()) {
+      setError('Введіть username.')
+      return
+    }
+
     try {
       setIsSubmitting(true)
       setError('')
-      await signIn({
-        name: formValues.name.trim(),
-        phone: formValues.phone.trim(),
-      })
+
+      if (mode === 'register') {
+        await signUp({
+          username: formValues.username.trim(),
+          phone: formValues.phone.trim(),
+        })
+      } else {
+        await signIn({
+          phone: formValues.phone.trim(),
+        })
+      }
+
       navigate(redirectPath, { replace: true })
     } catch (submitError) {
       setError(submitError.message)
@@ -66,7 +81,7 @@ function Auth() {
         <div className="results-header">
           <div>
             <p className="section-kicker">Авторизація</p>
-            <h2>Увійти або створити акаунт</h2>
+            <h2>{mode === 'register' ? 'Створити акаунт' : 'Увійти'}</h2>
           </div>
 
           <Link className="train-action" to="/">
@@ -76,17 +91,38 @@ function Auth() {
 
         {error ? <div className="error-state">{error}</div> : null}
 
+        <div className="auth-mode-switch">
+          <button
+            className={`auth-mode-button${mode === 'login' ? ' auth-mode-button-active' : ''}`}
+            type="button"
+            onClick={() => setSearchParams({ mode: 'login' })}
+          >
+            Увійти
+          </button>
+          <button
+            className={`auth-mode-button${mode === 'register' ? ' auth-mode-button-active' : ''}`}
+            type="button"
+            onClick={() => setSearchParams({ mode: 'register' })}
+          >
+            Зареєструватися
+          </button>
+        </div>
+
         <form className="booking-form" onSubmit={handleSubmit}>
-          <label className="booking-field">
-            <span>Ім’я</span>
-            <input
-              name="name"
-              type="text"
-              value={formValues.name}
-              onChange={handleChange}
-              placeholder="Потрібно лише для нового користувача"
-            />
-          </label>
+          {mode === 'register' ? (
+            <label className="booking-field">
+              <span>Username</span>
+              <input
+                name="username"
+                type="text"
+                required
+                minLength="2"
+                value={formValues.username}
+                onChange={handleChange}
+                placeholder="Введіть username"
+              />
+            </label>
+          ) : null}
 
           <label className="booking-field">
             <span>Телефон</span>
@@ -102,7 +138,13 @@ function Auth() {
           </label>
 
           <button className="train-action" type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Виконуємо вхід...' : 'Увійти'}
+            {isSubmitting
+              ? mode === 'register'
+                ? 'Створюємо акаунт...'
+                : 'Виконуємо вхід...'
+              : mode === 'register'
+                ? 'Зареєструватися'
+                : 'Увійти'}
           </button>
         </form>
       </section>

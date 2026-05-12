@@ -17,10 +17,18 @@ function isValidPhone(phone) {
   return /^\+?\d{10,15}$/.test(phone);
 }
 
-router.post("/phone", async (req, res, next) => {
+async function buildSessionResponse(user, res) {
+  const session = await createSession(user.id);
+
+  return res.status(200).json({
+    token: session.token,
+    user
+  });
+}
+
+router.post("/login", async (req, res, next) => {
   try {
     const phone = normalizePhone(req.body.phone);
-    const name = String(req.body.name || "").trim();
 
     if (!isValidPhone(phone)) {
       return res.status(400).json({
@@ -28,24 +36,51 @@ router.post("/phone", async (req, res, next) => {
       });
     }
 
-    let user = await findUserByPhone(phone);
+    const user = await findUserByPhone(phone);
 
     if (!user) {
-      if (!name) {
-        return res.status(404).json({
-          message: "User not found. Provide a name to create a new account."
-        });
-      }
-
-      user = await createUser({ name, phone });
+      return res.status(404).json({
+        message: "User not found."
+      });
     }
 
-    const session = await createSession(user.id);
+    return buildSessionResponse(user, res);
+  } catch (error) {
+    return next(error);
+  }
+});
 
-    return res.status(200).json({
-      token: session.token,
-      user
+router.post("/register", async (req, res, next) => {
+  try {
+    const phone = normalizePhone(req.body.phone);
+    const username = String(req.body.username || "").trim();
+
+    if (!username) {
+      return res.status(400).json({
+        message: "Username is required."
+      });
+    }
+
+    if (!isValidPhone(phone)) {
+      return res.status(400).json({
+        message: "Phone number must contain 10 to 15 digits."
+      });
+    }
+
+    const existingUser = await findUserByPhone(phone);
+
+    if (existingUser) {
+      return res.status(409).json({
+        message: "User with this phone already exists."
+      });
+    }
+
+    const user = await createUser({
+      name: username,
+      phone
     });
+
+    return buildSessionResponse(user, res);
   } catch (error) {
     return next(error);
   }
