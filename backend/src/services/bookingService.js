@@ -6,7 +6,7 @@ const bookingsFilePath = path.join(__dirname, "..", "data", "bookings.json");
 
 async function readBookings() {
   const raw = await fs.readFile(bookingsFilePath, "utf8");
-  return JSON.parse(raw);
+  return JSON.parse(raw.replace(/^\uFEFF/, ""));
 }
 
 async function getBookingsByTrainAndWagon(trainId, wagonId) {
@@ -38,8 +38,29 @@ async function createBooking(payload) {
   return booking;
 }
 
+async function getBookingsByUserId(userId) {
+  const bookings = await readBookings();
+  return bookings.filter((booking) => booking.userId === userId);
+}
+
+async function deleteBookingById(bookingId) {
+  const bookings = await readBookings();
+  const booking = bookings.find((item) => item.id === bookingId) || null;
+
+  if (!booking) {
+    return null;
+  }
+
+  const nextBookings = bookings.filter((item) => item.id !== bookingId);
+  await writeBookings(nextBookings);
+
+  return booking;
+}
+
 module.exports = {
   createBooking,
+  deleteBookingById,
+  getBookingsByUserId,
   readBookings,
   getBookingsByTrainAndWagon
 };

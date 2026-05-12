@@ -2,10 +2,44 @@ const express = require("express");
 
 const trains = require("../data/trains");
 const { findUserByToken } = require("../services/userService");
-const { createBooking, getBookingsByTrainAndWagon } = require("../services/bookingService");
+const {
+  createBooking,
+  deleteBookingById,
+  getBookingsByTrainAndWagon,
+  getBookingsByUserId
+} = require("../services/bookingService");
 const { collectBookedSeatIds } = require("../utils/seatMap");
 
 const router = express.Router();
+
+async function resolveAuthorizedUser(req) {
+  const authorizationHeader = req.headers.authorization || "";
+  const token = authorizationHeader.startsWith("Bearer ")
+    ? authorizationHeader.slice(7).trim()
+    : "";
+
+  if (!token) {
+    return {
+      error: {
+        status: 401,
+        message: "Authorization token is required."
+      }
+    };
+  }
+
+  const user = await findUserByToken(token);
+
+  if (!user) {
+    return {
+      error: {
+        status: 401,
+        message: "Session is invalid or expired."
+      }
+    };
+  }
+
+  return { user };
+}
 
 function validateBookingPayload(body) {
   const requiredFields = ["trainId", "wagonId", "name", "phone", "email", "seatIds"];
@@ -33,22 +67,11 @@ function validateBookingPayload(body) {
 
 router.post("/", async (req, res, next) => {
   try {
-    const authorizationHeader = req.headers.authorization || "";
-    const token = authorizationHeader.startsWith("Bearer ")
-      ? authorizationHeader.slice(7).trim()
-      : "";
+    const { user, error: authError } = await resolveAuthorizedUser(req);
 
-    if (!token) {
-      return res.status(401).json({
-        message: "Authorization token is required."
-      });
-    }
-
-    const user = await findUserByToken(token);
-
-    if (!user) {
-      return res.status(401).json({
-        message: "Session is invalid or expired."
+    if (authError) {
+      return res.status(authError.status).json({
+        message: authError.message
       });
     }
 
@@ -104,6 +127,55 @@ router.post("/", async (req, res, next) => {
     return res.status(201).json({
       message: "Booking created successfully.",
       booking
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.get("/my", async (req, res, next) => {
+  try {
+    const { user, error: authError } = await resolveAuthorizedUser(req);
+
+    if (authError) {
+      return res.status(authError.status).json({
+        message: authError.message
+      });
+    }
+
+    const bookings = await getBookingsByUserId(user.id);
+
+    return res.json({
+      items: bookings
+    });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.delete("/:bookingId", async (req, res, next) => {
+  try {
+    const { user, error: authError } = await resolveAuthorizedUser(req);
+
+    if (authError) {
+      return res.status(authError.status).json({
+        message: authError.message
+      });
+    }
+
+    const bookings = await getBookingsByUserId(user.id);
+    const ownedBooking = bookings.find((item) => item.id === req.params.bookingId);
+
+    if (!ownedBooking) {
+      return res.status(404).json({
+        message: "Booking not found for this user."
+      });
+    }
+
+    await deleteBookingById(req.params.bookingId);
+
+    return res.json({
+      message: "Booking cancelled successfully."
     });
   } catch (error) {
     return next(error);

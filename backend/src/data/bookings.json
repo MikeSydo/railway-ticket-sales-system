@@ -1,15 +1,16 @@
-﻿[
+[
   {
     "id": "booking-seed-1",
+    "userId": "user-seed-1",
     "trainId": "train-091k",
     "wagonId": "wagon-1",
     "seatIds": [
       1,
       2
     ],
-    "name": "Іван Петренко",
-    "phone": "+380671112233",
-    "email": "ivan.petrenko@example.com",
+    "name": "Іван Іваненко",
+    "phone": "+380991234567",
+    "email": "ivan.ivanenko@example.com",
     "createdAt": "2026-04-29T08:00:00.000Z"
   },
   {

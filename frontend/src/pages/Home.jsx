@@ -50,6 +50,9 @@ function Home() {
               <span className="user-badge">
                 {user.name} · {user.phone}
               </span>
+              <Link className="train-action secondary-action" to="/my-bookings">
+                Мої бронювання
+              </Link>
               <button className="train-action secondary-action" type="button" onClick={signOut}>
                 Вийти
               </button>
