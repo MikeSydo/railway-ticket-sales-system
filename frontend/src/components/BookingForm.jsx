@@ -6,6 +6,7 @@ function BookingForm({
   selectedSeatIds,
   isSubmitDisabled,
   selectedWagonLabel,
+  isIdentityLocked,
 }) {
   return (
     <form className="booking-form" onSubmit={onSubmit}>
@@ -27,6 +28,7 @@ function BookingForm({
           type="text"
           required
           minLength="2"
+          disabled={isIdentityLocked}
           value={values.name}
           onChange={onChange}
           placeholder="Введіть ім’я пасажира"
@@ -40,6 +42,7 @@ function BookingForm({
           type="tel"
           required
           pattern="^\+?[0-9\s\-()]{10,20}$"
+          disabled={isIdentityLocked}
           value={values.phone}
           onChange={onChange}
           placeholder="+380..."

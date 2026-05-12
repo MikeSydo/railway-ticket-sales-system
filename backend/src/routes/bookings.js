@@ -1,6 +1,7 @@
 const express = require("express");
 
 const trains = require("../data/trains");
+const { findUserByToken } = require("../services/userService");
 const { createBooking, getBookingsByTrainAndWagon } = require("../services/bookingService");
 const { collectBookedSeatIds } = require("../utils/seatMap");
 
@@ -32,6 +33,25 @@ function validateBookingPayload(body) {
 
 router.post("/", async (req, res, next) => {
   try {
+    const authorizationHeader = req.headers.authorization || "";
+    const token = authorizationHeader.startsWith("Bearer ")
+      ? authorizationHeader.slice(7).trim()
+      : "";
+
+    if (!token) {
+      return res.status(401).json({
+        message: "Authorization token is required."
+      });
+    }
+
+    const user = await findUserByToken(token);
+
+    if (!user) {
+      return res.status(401).json({
+        message: "Session is invalid or expired."
+      });
+    }
+
     const validationError = validateBookingPayload(req.body);
     if (validationError) {
       return res.status(400).json({
@@ -72,11 +92,12 @@ router.post("/", async (req, res, next) => {
     }
 
     const booking = await createBooking({
+      userId: user.id,
       trainId: train.id,
       wagonId: wagon.id,
       seatIds: req.body.seatIds,
-      name: String(req.body.name).trim(),
-      phone: String(req.body.phone).trim(),
+      name: user.name,
+      phone: user.phone,
       email: String(req.body.email).trim()
     });
 

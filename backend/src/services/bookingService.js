@@ -22,6 +22,7 @@ async function createBooking(payload) {
   const bookings = await readBookings();
   const booking = {
     id: crypto.randomUUID(),
+    userId: payload.userId,
     trainId: payload.trainId,
     wagonId: payload.wagonId,
     seatIds: payload.seatIds,

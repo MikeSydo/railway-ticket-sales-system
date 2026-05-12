@@ -20,11 +20,12 @@ export async function getWagonSeats(trainId, wagonId, signal) {
   return response.json()
 }
 
-export async function createBooking(payload) {
+export async function createBooking(payload, token) {
   const response = await fetch('/api/bookings', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(payload),
   })

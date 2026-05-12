@@ -420,6 +420,12 @@
   border-color: #c9672a;
 }
 
+.booking-field input:disabled {
+  background: #f3f5f7;
+  color: #5a6c7b;
+  cursor: not-allowed;
+}
+
 .booking-form .train-action:disabled {
   opacity: 0.6;
   cursor: not-allowed;

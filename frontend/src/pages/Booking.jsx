@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 import BookingForm from '../components/BookingForm'
 import SeatMap from '../components/SeatMap'
 import WagonSelector from '../components/WagonSelector'
+import { useAuth } from '../context/AuthContext'
 import {
   createBooking,
   getTrainDetails,
@@ -26,6 +27,7 @@ function formatDateTime(value) {
 
 function Booking() {
   const { trainId } = useParams()
+  const { token, user } = useAuth()
   const [train, setTrain] = useState(null)
   const [selectedWagonId, setSelectedWagonId] = useState('')
   const [seats, setSeats] = useState([])
@@ -42,6 +44,18 @@ function Booking() {
   const [seatsError, setSeatsError] = useState('')
   const [bookingError, setBookingError] = useState('')
   const [bookingSuccess, setBookingSuccess] = useState('')
+
+  useEffect(() => {
+    if (!user) {
+      return
+    }
+
+    setFormValues((current) => ({
+      ...current,
+      name: user.name || '',
+      phone: user.phone || '',
+    }))
+  }, [user])
 
   useEffect(() => {
     const controller = new AbortController()
@@ -150,12 +164,12 @@ function Booking() {
         name: formValues.name.trim(),
         phone: formValues.phone.trim(),
         email: formValues.email.trim(),
-      })
+      }, token)
 
       setBookingSuccess('Бронювання успішно створено.')
       setFormValues({
-        name: '',
-        phone: '',
+        name: user?.name || '',
+        phone: user?.phone || '',
         email: '',
       })
 
@@ -278,6 +292,7 @@ function Booking() {
                 selectedWagonLabel={
                   train.wagons.find((wagon) => wagon.id === selectedWagonId)?.id.replace('wagon-', '') || ''
                 }
+                isIdentityLocked
               />
             </div>
           </>
